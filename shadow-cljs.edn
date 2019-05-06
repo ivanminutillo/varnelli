@@ -4,6 +4,7 @@
 
  :dependencies [[binaryage/devtools "0.9.7"]
                 [reagent "0.8.0-alpha2"]
+                [cljs-ajax "0.7.5"]
                 [clj-commons/cljss "1.6.4"]]
 
  ;; set an nrepl port for connection to a REPL.
@@ -16,13 +17,13 @@
 
         :modules
         {:main
-         {:entries [tes2t.core]}}
+         {:entries [varnelli.core]}}
 
         :devtools
         ;; before live-reloading any code call this function
-        {:before-load tes2t.core/stop
+        {:before-load varnelli.core/stop
          ;; after live-reloading finishes call this function
-         :after-load tes2t.core/start
+         :after-load varnelli.core/start
          ;; serve the public directory over http at port 8700
          :http-root    "public"
          :http-port    8700
