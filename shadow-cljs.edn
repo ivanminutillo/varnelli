@@ -4,7 +4,8 @@
 
  :dependencies [[binaryage/devtools "0.9.7"]
                 [reagent "0.8.0-alpha2"]
-                [cljs-ajax "0.7.5"]
+                [cljs-http "0.1.46"]
+                [com.cognitect/transit-cljs "0.8.256"]
                 [clj-commons/cljss "1.6.4"]]
 
  ;; set an nrepl port for connection to a REPL.

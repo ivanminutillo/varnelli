@@ -1,37 +1,35 @@
 (ns varnelli.core
+   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [reagent.core :as reagent :refer [atom]]
-            [ajax.core :refer [POST]]
-            [varnelli.components.header :refer [header]]))
+            [cljs-http.client :as http]
+            [cljs.core.async :refer [<!]]
+            [varnelli.components.header :refer [header]]
+            [varnelli.components.txs :refer [txs]]))
 
 ;; define your app data so that it doesn't get over-written on reload
-
+(def url "http://localhost:3000/wallet/v1/")
 (defonce app-state (atom {:text "Hello world!"}))
-(defn handler [response]
-  (.log js/console (str response)))
 
-(defn error-handler [{:keys [status status-text]}]
-  (.log js/console (str "something bad happened: " status " " status-text)))
+(def items (reagent/atom [{:amount "3" :currency "santamaria"} {:amount "6" :currency "santamaria"}])) 
 
-(defn clj->json
-  [ds]
-  (.stringify js/JSON (clj->js ds)))
-
-(defn fetch-txs! []
-  (let [json (clj->json {:type "db-only"
-                              :connection    "mongo"})]
-  (POST "http://localhost:3000/wallet/v1/transactions/list"
-    {:headers {"x-api-key" "K8trtGu8FmfNiOFqcZhJhgtxhqs5FluM"
-               "Content-Type" "application/json"
-               "Accept" "application/json"
-               }}
-    {:format :json}
-    {:params json
-     :handler handler
-     :error-handler error-handler})))
+(defn fetch-txs []              
+  (http/post (str url "transactions/list")
+              {:with-credentials? false
+               :as :json
+               :json-params {:type "db-only"
+                             :connection    "mongo"}
+               :headers {"x-api-key" "K8trtGu8FmfNiOFqcZhJhgtxhqs5FluM"
+                         "Content-Type" "application/json"
+                         "Accept" "application/json"}
+               }))
 
 (defn app []
-  (fetch-txs!)
-  [header])
+  (go (let [response (<! (fetch-txs))]
+        (js/console.log (:body response))))
+  [:div
+   [header]
+   [txs]]
+  )
 
 (defn start []
   (reagent/render-component [app]

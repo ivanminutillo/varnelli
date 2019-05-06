@@ -19,7 +19,7 @@
    :height "60px"
    :margin-top "20px"})
 (defn header
-  []
+  [txs]
   [:section {:class (hero)}
    [:div.container.grid-lg
     [:header.navbar
