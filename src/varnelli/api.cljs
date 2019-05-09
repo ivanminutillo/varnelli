@@ -8,7 +8,7 @@
 (def url "http://localhost:3000/wallet/v1/")
 (def apikey "K8trtGu8FmfNiOFqcZhJhgtxhqs5FluM" )
 (def balance "balance")
-(def tags "tags/list")
+(def tags-list "tags/list")
 (def txs-list "transactions/list")
 (def tx "transactions/get")
 (def new-tx "transactions/new")

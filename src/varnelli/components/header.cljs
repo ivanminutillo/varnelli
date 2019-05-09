@@ -10,7 +10,12 @@
 (defstyles hero []
   {:background "#197ce6"
    :height "100px"
-   :line-height "100px"})
+   :line-height "100px"
+   "a" {:color "white !important"
+        :font-weight "600"
+        :font-size "14px"
+        "&:hover" {
+                   :text-decoration "underline"}}})
 
 (defstyles logo []
   {:background "url(./images/BELOGO.png)"
@@ -21,15 +26,13 @@
 (defn header
   [txs]
   [:section {:class (hero)}
-   [:div.container.grid-lg
+   [:div.container.grid-xl
     [:header.navbar
      [:section.navbar-section
-      [:span {:class (logo)}]]
-     [:section.navbar-center 
-      [:div.form-group
-       [:input.form-input {:type "text" :id "search" :placeholder "Search..."}]
-       ]]
+      [:a.navbar-brand.mr-2 {:href "/"} "varnelli"]
+      [:a.btn.btn-link {:href "/about"} "About"]
+      [:a.btn.btn-link {:href "/tags"} "Tags"]]
      [:section.navbar-section
-      [:button.btn.btn-primary {:href "#" :class (login)} "Login"]]]]
-   ]
-  )
+      [:div.input-group.input-inline
+       [:input.form-input {:type "text" :id "search" :placeholder "Search..."}]
+       [:button.btn.btn-primary.input-group-btn "search"]]]]]])
