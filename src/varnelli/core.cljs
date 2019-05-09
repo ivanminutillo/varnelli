@@ -1,44 +1,46 @@
 (ns varnelli.core
-   (:require-macros [cljs.core.async.macros :refer [go]])
-  (:require [reagent.core :as reagent :refer [atom]]
-            [cljs-http.client :as http]
-            [cljs.core.async :refer [<!]]
+  (:require [reagent.core :as r :refer [atom]]
+            [reitit.frontend :as reitit]
+            [reagent.session :as session]
+            [clerk.core :as clerk]
+            [accountant.core :as accountant]
             [varnelli.components.header :refer [header]]
-            [varnelli.components.txs :refer [txs]]))
+            [varnelli.routes :refer [router page-for]]))
 
-;; define your app data so that it doesn't get over-written on reload
-(def url "http://localhost:3000/wallet/v1/")
-(defonce app-state (atom {:text "Hello world!"}))
+(defonce match (r/atom nil))
 
-(def items (reagent/atom [{:amount "3" :currency "santamaria"} {:amount "6" :currency "santamaria"}])) 
+(defn current-page []
+  (fn []
+    (let [page (:current-page (session/get :route))]
+      [:div
+       [header]
+       [page]])))
 
-(defn fetch-txs []              
-  (http/post (str url "transactions/list")
-              {:with-credentials? false
-               :as :json
-               :json-params {:type "db-only"
-                             :connection    "mongo"}
-               :headers {"x-api-key" "K8trtGu8FmfNiOFqcZhJhgtxhqs5FluM"
-                         "Content-Type" "application/json"
-                         "Accept" "application/json"}
-               }))
-
-(defn app []
-  (go (let [response (<! (fetch-txs))]
-        (js/console.log (:body response))))
-  [:div
-   [header]
-   [txs]]
-  )
 
 (defn start []
-  (reagent/render-component [app]
-                            (. js/document (getElementById "app"))))
+  (r/render [current-page]
+                      (. js/document (getElementById "app"))))
 
 (defn ^:export init []
   ;; init is called ONCE when the page loads
   ;; this is called in the index.html and must be exported
   ;; so it is available even in :advanced release builds
+  (clerk/initialize!)
+  (accountant/configure-navigation!
+   {:nav-handler
+    (fn [path]
+      (let [match (reitit/match-by-path router path)
+            current-page (:name (:data  match))
+            route-params (:path-params match)]
+        (r/after-render clerk/after-render!)
+        (session/put! :route {:current-page (page-for current-page)
+                              :route-params route-params})
+        (clerk/navigate-page! path)
+        ))
+    :path-exists?
+    (fn [path]
+      (boolean (reitit/match-by-path router path)))})
+  (accountant/dispatch-current!)
   (start))
 
 (defn stop []

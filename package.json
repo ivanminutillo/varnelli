@@ -11,6 +11,9 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "shadow-cljs": "^2.0.80",
-    "spectre.css": "^0.5.8"
+    "spectre.css": "^0.5.8",
+    "vega": "^5.3.5",
+    "vega-embed": "^4.0.0",
+    "vega-lite": "^3.2.1"
   }
 }

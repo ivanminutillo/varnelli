@@ -4,19 +4,23 @@
 
 
 (defn txs
-  [items]
-  (.log js/console items)
-  [:div.container.grid-lg
-   [:table.table.table-striped.table-hover
-    [:thead
-     [:tr
-      [:th "Amount"]
-      [:th "currency"]]]
-    [:tbody
-     (map (fn [item]
-            [:tr {:key {:id item}}
-             [:td (:amount item)]
-             [:td (:currency item)]]
-            )
-          (vals @items)) 
-       ]]])
+  [users]
+(let [items (:transactions @users)]
+    [:div.container.grid-lg
+     [:table.table.table-striped.table-hover
+      [:thead
+       [:tr
+        [:th "Transaction Id"]
+        [:th "Amount"]
+        [:th "Currency"]
+        [:th "Time ago"]]]
+      [:tbody
+       (for [item items]
+         ^{:key {:amount item}}
+         [:tr
+          [:td (:transaction-id item)]
+          [:td (:amount item)]
+          [:td (:currency item)]
+          [:td (:timestamp item)]])]
+      ]])
+  )
