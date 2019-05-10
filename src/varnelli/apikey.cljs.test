@@ -1,0 +1,3 @@
+(ns varnelli.apikey)
+
+(def apikey "insert your apikey here...")
