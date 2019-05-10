@@ -36,6 +36,6 @@ Varnelli is built in clojurescript, relevant libraries are:
 
 - [shadow-cljs](http://shadow-cljs.org/): a clojurescript build tool 
 - [Reagent](https://github.com/reagent-project/reagent): a wrapper interface to React
-- [Reitit](https://github.com/metosin/reitit), [Accountant](https://github.com/venantius/accountant): Routing libraries
+- [Reitit](https://github.com/metosin/reitit): Routing libraries
 - [cljss](https://github.com/clj-commons/cljss): CSS-in-JS for ClojureScript
 - [Oz](https://github.com/metasoarous/oz/): a wrapper to the awesome vega/vega-lite dataviz library
