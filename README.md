@@ -1,4 +1,4 @@
-# Varnelli
+# 🍶Varnelli
 
 A simple block explorer client build on top of the [social wallet api](https://github.com/Commonfare-net/social-wallet-api).
 
