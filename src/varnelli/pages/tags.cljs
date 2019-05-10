@@ -15,23 +15,6 @@
 (defn fetch->tags []
   (fetch tags-list params))
 
-
-; (defn tags-distribution [tags-data]
-;   {
-;    :title "Tags distribution"
-;    :width 300,
-;    :data {:values tags-data}
-;    :mark "area"
-;    :encoding {:x {:field "created"
-;                   :type "ordinal"
-;                   :axis {:title "Date"}
-;                   :timeUnit "utcyearmonthdatehoursminutesseconds"}
-;               :y {
-;                   :field "count",
-;                   :type "quantitative"}
-;               :color {:field "tag"
-;                       :type "nominal"}}})
-
 (fetch-and-store tags-state fetch->tags)
 
 (defstyles header []
@@ -43,6 +26,8 @@
   []
   [:div.container.grid-lg
    [:h2 {:class (header)} "Tags dashboard"]
+  ;  -> here I should callback the dataviz once the state is updated with 
+  ;  the call result 
    (let [dataviz (tags-distribution (:tags @tags-state))]
      [oz.core/vega-lite dataviz])])
 
