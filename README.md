@@ -5,37 +5,31 @@ A simple block explorer client build on top of the [social wallet api](https://g
 ## Prerequisites
 
 In order to use Varnelli, you need to have swapi up and running on your machine.
-To start swapi locally, you can follow the instruction from the [original repository](https://github.com/Commonfare-net/social-wallet-api).
-
-Once swapi is running fine, you need to copy the apikey generated during the build phase and create a new ```apikey.cljs``` file, located under ```src/varnelli``` path as the following:
-``` cljs
-(ns varnelli.apikey)
-
-(def apikey "yourapikeyhere")
-```
-
+Follow the instruction from the [official repo](https://github.com/Commonfare-net/social-wallet-api) to spin up an instance of swapi locally.
 
 ## Getting started
 
-Clone the project
+#### 1. Clone the project
 ``` shell
 git clone https://github.com/ivanminutillo/varnelli.git
 
 cd varnelli
 ```
-Install javascript dependencies
+#### 2. Install javascript dependencies
 
 ``` shell
 npm install
 ```
 
-Start the server
+#### 3. Rename ```apikey.cljs.test``` to ```apikey.cljs``` and paste the apikey value generated during the swapi build fase 
+
+#### 4. Start the server
 
 ``` shell
 shadow-cljs watch app
 ```
 
-Navigate to http://localhost:8700
+#### 5. Navigate to http://localhost:8700
 
 # Tech
 Varnelli is built in clojurescript, relevant libraries are:
