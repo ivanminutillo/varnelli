@@ -1,7 +1,7 @@
 apikey.cljs
 /node_modules
 /target
-/public/js
+/public/js/**
 .shadow-cljs
 .nrepl-port
 yarn.lock
