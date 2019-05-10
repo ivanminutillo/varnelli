@@ -2,19 +2,18 @@
 (ns varnelli.api
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require
+   [varnelli.apikey :refer [apikey]]
    [cljs.core.async :refer [<!]]
    [cljs-http.client :as http]))
 
 (def url "http://localhost:3000/wallet/v1/")
-(def apikey "K8trtGu8FmfNiOFqcZhJhgtxhqs5FluM" )
-(def apikeymacbookpro "Ogt2t5u5CKsOsvCzFEhRcNfAtMu9uBck" )
 (def balance "balance")
 (def tags-list "tags/list")
 (def txs-list "transactions/list")
 (def tx "transactions/get")
 (def new-tx "transactions/new")
 
-(def headers {"x-api-key" apikeymacbookpro
+(def headers {"x-api-key" apikey
               "Content-Type" "application/json"
               "Accept" "application/json"})
 

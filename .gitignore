@@ -1,5 +1,9 @@
-node_modules
-package-lock.json
+apikey.cljs
+/node_modules
+/target
+/public/js
 .shadow-cljs
-public/js
+.nrepl-port
+yarn.lock
+package-lock.json
 
