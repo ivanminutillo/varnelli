@@ -5,8 +5,10 @@ A simple block explorer client build on top of the [social wallet api](https://g
 ## Prerequisites
 
 In order to use Varnelli, you need to have swapi up and running on your machine.
-To start swapi locally, you can follow the instruction from the [original repository](https://github.com/Commonfare-net/social-wallet-api)
-Once swapi is running fine, you should copy/paste the 
+To start swapi locally, you can follow the instruction from the [original repository](https://github.com/Commonfare-net/social-wallet-api).
+
+Once swapi is running fine, you need to copy the apikey generated during the build phase and paste it [here]
+
 ## Getting started
 
 Clone the project
