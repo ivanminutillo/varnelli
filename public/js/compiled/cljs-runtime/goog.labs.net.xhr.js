@@ -162,10 +162,10 @@ goog.scope(function() {
       }
       try {
         request.send(data);
-      } catch (e$5) {
+      } catch (e) {
         request.onreadystatechange = goog.nullFunction;
         goog.global.clearTimeout(timer);
-        reject(new xhr.Error("Error sending XHR: " + e$5.message, url, request));
+        reject(new xhr.Error("Error sending XHR: " + e.message, url, request));
       }
     });
     return result.thenCatch(function(error) {

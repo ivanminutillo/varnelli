@@ -7,13 +7,14 @@
 
 (def url "http://localhost:3000/wallet/v1/")
 (def apikey "K8trtGu8FmfNiOFqcZhJhgtxhqs5FluM" )
+(def apikeymacbookpro "Ogt2t5u5CKsOsvCzFEhRcNfAtMu9uBck" )
 (def balance "balance")
 (def tags-list "tags/list")
 (def txs-list "transactions/list")
 (def tx "transactions/get")
 (def new-tx "transactions/new")
 
-(def headers {"x-api-key" apikey
+(def headers {"x-api-key" apikeymacbookpro
               "Content-Type" "application/json"
               "Accept" "application/json"})
 

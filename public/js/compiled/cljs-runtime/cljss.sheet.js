@@ -9,9 +9,9 @@ var tag = goog.dom.createElement("style");
 var head = (goog.dom.getElementsByTagNameAndClass("head")[(0)]);
 goog.object.set(tag,"type","text/css");
 
-var G__37770_37778 = tag;
-var G__37771_37779 = goog.dom.createTextNode("");
-goog.dom.appendChild(G__37770_37778,G__37771_37779);
+var G__37580_37589 = tag;
+var G__37581_37590 = goog.dom.createTextNode("");
+goog.dom.appendChild(G__37580_37589,G__37581_37590);
 
 goog.dom.appendChild(head,tag);
 
@@ -100,25 +100,25 @@ throw (new Error(["A stylesheet can only have ",cljs.core.str.cljs$core$IFn$_inv
 } else {
 }
 
-if(cljs.core.truth_((function (){var fexpr__37772 = cljs.core.deref(self__.cache);
-return (fexpr__37772.cljs$core$IFn$_invoke$arity$1 ? fexpr__37772.cljs$core$IFn$_invoke$arity$1(cls_name) : fexpr__37772.call(null,cls_name));
+if(cljs.core.truth_((function (){var fexpr__37582 = cljs.core.deref(self__.cache);
+return (fexpr__37582.cljs$core$IFn$_invoke$arity$1 ? fexpr__37582.cljs$core$IFn$_invoke$arity$1(cls_name) : fexpr__37582.call(null,cls_name));
 })())){
 return null;
 } else {
 cljs.core.swap_BANG_.cljs$core$IFn$_invoke$arity$3(self__.cache,cljs.core.conj,cls_name);
 
 var rule__$1 = ((cljs.core.ifn_QMARK_(rule))?(rule.cljs$core$IFn$_invoke$arity$0 ? rule.cljs$core$IFn$_invoke$arity$0() : rule.call(null)):rule);
-var rules_count = (function (){var G__37773 = goog.object.get(self__.sheet,"cssRules");
-var G__37774 = "length";
-return goog.object.get(G__37773,G__37774);
+var rules_count = (function (){var G__37583 = goog.object.get(self__.sheet,"cssRules");
+var G__37584 = "length";
+return goog.object.get(G__37583,G__37584);
 })();
 if(cljss.utils.dev_QMARK_){
-var G__37775 = self__.tag;
-var G__37776 = goog.dom.createTextNode(rule__$1);
-return goog.dom.appendChild(G__37775,G__37776);
+var G__37585 = self__.tag;
+var G__37586 = goog.dom.createTextNode(rule__$1);
+return goog.dom.appendChild(G__37585,G__37586);
 } else {
 try{return self__.sheet.insertRule(rule__$1,rules_count);
-}catch (e37777){var e = e37777;
+}catch (e37587){var e = e37587;
 if(cljss.utils.dev_QMARK_){
 return console.warn("Illegal CSS rule",rule__$1);
 } else {

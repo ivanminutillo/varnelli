@@ -225,9 +225,9 @@ goog.scope(function() {
       this.inSend_ = true;
       this.xhr_.send(content);
       this.inSend_ = false;
-    } catch (err$4) {
-      goog.log.fine(this.logger_, this.formatMsg_("Send error: " + err$4.message));
-      this.error_(goog.net.ErrorCode.EXCEPTION, err$4);
+    } catch (err) {
+      goog.log.fine(this.logger_, this.formatMsg_("Send error: " + err.message));
+      this.error_(goog.net.ErrorCode.EXCEPTION, err);
     }
   };
   /**

@@ -812,7 +812,7 @@ goog.globalEval = function(script) {
         if (typeof goog.global["_evalTest_"] != "undefined") {
           try {
             delete goog.global["_evalTest_"];
-          } catch (ignore$0) {
+          } catch (ignore) {
           }
           goog.evalWorksForGlobals_ = true;
         } else {

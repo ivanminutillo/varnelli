@@ -47,7 +47,7 @@ goog.json.parse = goog.json.USE_NATIVE_JSON ? /** @type {function(*):Object} */ 
         goog.json.errorLogger_("Invalid JSON: " + o, error);
       }
       return result;
-    } catch (ex$3) {
+    } catch (ex) {
     }
   }
   throw new Error("Invalid JSON string: " + o);
