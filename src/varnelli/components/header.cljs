@@ -8,31 +8,28 @@
    :font-weight "800"})
 
 (defstyles hero []
-  {:background "#197ce6"
+  {
    :height "100px"
    :line-height "100px"
-   "a" {:color "white !important"
+   :border-bottom "1px solid rgba(255, 255, 255, .3)"
+   "a" {:color "rgba(255,255,255, .8)"
         :font-weight "600"
-        :font-size "14px"
+        :font-size "13px"
         "&:hover" {
                    :text-decoration "underline"}}})
 
 (defstyles logo []
-  {:background "url(./images/BELOGO.png)"
-   :background-size "cover"
-   :width "105px"
-   :height "60px"
-   :margin-top "20px"})
+  {:color "white !important"
+   "small" {:margin-left "4px"
+            :color "white"
+            :background-color "#00c3ff"
+            :font-weight "600"}})
 (defn header
   [txs]
-  [:section {:class (hero)}
+  [:section
    [:div.container.grid-xl
-    [:header.navbar
+    [:header.navbar {:class (hero)}
      [:section.navbar-section
-      [:a.navbar-brand.mr-2 {:href "/"} "varnelli"]
-      [:a.btn.btn-link {:href "/about"} "About"]
-      [:a.btn.btn-link {:href "/tags"} "Tags"]]
+      [:a {:class (logo) :href "/"} "🍶 Varnelli" [:small.label "alpha"]]]
      [:section.navbar-section
-      [:div.input-group.input-inline
-       [:input.form-input {:type "text" :id "search" :placeholder "Search..."}]
-       [:button.btn.btn-primary.input-group-btn "search"]]]]]])
+      [:a {:href "/about"} "About"]]]]])

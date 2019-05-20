@@ -3,10 +3,12 @@
    (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [reagent.core :as r :refer [atom]]
             [varnelli.api :refer [fetch fetch-and-store txs-list]]
-            [varnelli.components.txs :refer [txs]]))
+            [varnelli.components.txs :refer [txs]]
+            [varnelli.components.hero :refer [hero]]))
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce txs-state (r/atom []))
+(defonce txs-state (r/atom [{:total-count 0
+                             :transactions [{}]}]))
 
 (def params {:type "db-only"
              :connection    "mongo"})
@@ -18,4 +20,5 @@
 
 (defn home []
   [:div
+   [hero txs-state]
    [txs txs-state]])

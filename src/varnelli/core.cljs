@@ -1,11 +1,18 @@
 (ns varnelli.core
+  (:require-macros [cljss.core])
   (:require [reagent.core :as r :refer [atom]]
             [reitit.frontend :as reitit]
             [reagent.session :as session]
             [clerk.core :as clerk]
+            [cljss.core :refer [inject-global]]
             [accountant.core :as accountant]
             [varnelli.components.header :refer [header]]
             [varnelli.routes :refer [router page-for]]))
+
+(inject-global
+ {:body {
+         :background-color "#1E2730"}})
+
 
 (defonce match (r/atom nil))
 

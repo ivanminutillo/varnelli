@@ -32,7 +32,6 @@
 ;               :color {:field "tag"
 ;                       :type "nominal"}}})
 
-(fetch-and-store tags-state fetch->tags)
 
 (defstyles header []
   {:margin-top "40px"
@@ -41,8 +40,12 @@
 
 (defn tags
   []
+  (fetch-and-store tags-state fetch->tags)
+(fn []
+  (js/console.log 1 @tags-state )
   [:div.container.grid-lg
    [:h2 {:class (header)} "Tags dashboard"]
    (let [dataviz (tags-distribution (:tags @tags-state))]
      [oz.core/vega-lite dataviz])])
+  )
 

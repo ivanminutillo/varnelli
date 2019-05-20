@@ -1,13 +1,14 @@
 (ns varnelli.components.txs
   (:require-macros [cljss.core])
-  (:require [cljss.core :refer [defstyles]]))
+  (:require 
+   [cljss.core :refer [defstyles]]))
 
 
 (defn txs
   [users]
-(let [items (:transactions @users)]
+  (let [items (:transactions @users)]
     [:div.container.grid-lg
-     [:table.table.table-striped.table-hover
+     [:table.table.table-hover
       [:thead
        [:tr
         [:th "Transaction Id"]

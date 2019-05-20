@@ -3,13 +3,16 @@
  ["src"]
 
  :dependencies [[binaryage/devtools "0.9.7"]
-                [reagent "0.8.0-alpha2"]
                 [cljs-http "0.1.46"]
                 [metosin/reitit "0.3.0"]
                 [pez/clerk "1.0.0"]
                 [reagent-utils "0.3.2"]
                 [yogthos/config "1.1.1"]
-                [metasoarous/oz "1.6.0-alpha2"]
+                [metasoarous/oz "1.6.0-alpha2"
+                 :exclusions [cljsjs/vega cljsjs/vega-lite cljsjs/vega-embed cljsjs/vega-tooltip
+                              cljsjs/react cljsjs/react-dom cljsjs/react-dom-server cljsjs/create-react-class]]
+                [reagent "0.8.1"
+                 :exclusions [cljsjs/react cljsjs/react-dom cljsjs/react-dom-server cljsjs/create-react-class]]]
                 [venantius/accountant "0.2.4"]
                 [clj-commons/cljss "1.6.4"]]
 
