@@ -3,14 +3,16 @@
 
 (defn tags-distribution [tags-data]
   {:title "Tags distribution"
-   :width 300
+   :width 400
+   :height 300
+   :autosize {:type "fit" :contains "padding"}
    :data {:values tags-data}
    :mark {:type "area" :tooltip "null"}
    :encoding {:x {:field "created"
-                  :type "ordinal"
+                  :type "temporal"
                   :axis {:title "Date"}
-                  :timeUnit "utcyearmonthdatehoursminutesseconds"}
+                  :timeUnit "monthdate"}
               :y {:field "count"
-                  :type "quantitative"}
+                  :aggregate "sum"}
               :color {:field "tag"
                       :type "nominal"}}})

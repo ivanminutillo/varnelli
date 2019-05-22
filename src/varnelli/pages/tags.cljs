@@ -42,7 +42,6 @@
   []
   (fetch-and-store tags-state fetch->tags)
 (fn []
-  (js/console.log 1 @tags-state )
   [:div.container.grid-lg
    [:h2 {:class (header)} "Tags dashboard"]
    (let [dataviz (tags-distribution (:tags @tags-state))]

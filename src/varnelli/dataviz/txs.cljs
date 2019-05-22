@@ -3,13 +3,16 @@
 
 (defn txs-distribution [txs-data]
   {:title "Transactions distribution"
-   :width 300
+   :width 400
+   :height 300
+   :autosize {:type "fit" :contains "padding"}
    :data {:values txs-data}
    :mark {:type "line" :tooltip "null"}
    :encoding {:x {:field "timestamp"
                   :type "temporal"
                   :axis {:title "Date"}
-                  :timeUnit "monthday"}
+                  :timeUnit "monthdate"}
               :y {:field "amount"
+                  
                   :aggregate "sum"}
               }})

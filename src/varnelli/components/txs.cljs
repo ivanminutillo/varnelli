@@ -5,9 +5,10 @@
 
 
 (defn txs
-  [users]
-  (let [items (:transactions @users)]
-    [:div.container.grid-lg
+  [txs]
+  (let [items (:transactions @txs)]
+    (print items)
+    [:div.container.grid-xl
      [:table.table.table-hover
       [:thead
        [:tr
