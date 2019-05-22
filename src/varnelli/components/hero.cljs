@@ -80,7 +80,7 @@
        [:div
         [:div {:class (search)}
          [:div.has-icon-right
-          [:input.form-input {:placeholder "Search fo hash, transaction or tag" :type "text"}]
+          [:input.form-input {:placeholder "Search for hash, transaction or tag" :type "text"}]
           [:i.form-icon.icon.icon-search]]]
         [:div {:class (dataviz-container)}
          [:div {:class (dataviz)}

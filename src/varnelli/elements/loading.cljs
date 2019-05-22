@@ -1,6 +1,6 @@
 (ns varnelli.elements.loading
   (:require-macros [cljss.core])
-  (:require [cljss.core :refer [defstyles]])
+  (:require [cljss.core :refer [defstyles]]))
 
 
 (defstyles loader [] {:color "white"
