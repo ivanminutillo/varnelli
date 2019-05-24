@@ -4,7 +4,7 @@
     [cljs.core.async.macros :refer [go]])
   (:require [reagent.core :as r :refer [atom]]
             [varnelli.elements.loading :refer [loading]]
-            [varnelli.api :refer [fetch txs-list tags-list]]
+            [varnelli.api :refer [fetch txs-list]]
             [varnelli.components.txs :refer [txs]]
             [varnelli.components.hero :refer [hero]]))
 ;; define your app data so that it doesn't get over-written on reload

@@ -2,7 +2,7 @@
   (:require [oz.core :as oz]))
 
 (defn txs-distribution [txs-data]
-  {:title "Transactions distribution"
+  {:title "Volume distribution"
    :width 400
    :height 300
    :autosize {:type "fit" :contains "padding"}

@@ -1,13 +1,13 @@
 (ns varnelli.core
   (:require-macros [cljss.core])
   (:require [reagent.core :as r :refer [atom]]
-            [reitit.frontend :as reitit]
+            [reitit.frontend :as rf]
+            [reitit.coercion :as coercion]
+            [reitit.frontend.easy :as rfe]
             [reagent.session :as session]
-            [clerk.core :as clerk]
             [cljss.core :refer [inject-global]]
-            [accountant.core :as accountant]
             [varnelli.components.header :refer [header]]
-            [varnelli.routes :refer [router page-for]]))
+            [varnelli.routes :refer [routes]]))
 
 (inject-global
  {:body {
@@ -17,11 +17,12 @@
 (defonce match (r/atom nil))
 
 (defn current-page []
-  (fn []
-    (let [page (:current-page (session/get :route))]
-      [:div
-       [header]
-       [page]])))
+  [:div
+   [header]
+   (if @match
+     (let [view (:view (:data @match))]
+       (print view)
+       [view @match]))])
 
 
 (defn start []
@@ -32,22 +33,10 @@
   ;; init is called ONCE when the page loads
   ;; this is called in the index.html and must be exported
   ;; so it is available even in :advanced release builds
-  (clerk/initialize!)
-  (accountant/configure-navigation!
-   {:nav-handler
-    (fn [path]
-      (let [match (reitit/match-by-path router path)
-            current-page (:name (:data  match))
-            route-params (:path-params match)]
-        (r/after-render clerk/after-render!)
-        (session/put! :route {:current-page (page-for current-page)
-                              :route-params route-params})
-        (clerk/navigate-page! path)
-        ))
-    :path-exists?
-    (fn [path]
-      (boolean (reitit/match-by-path router path)))})
-  (accountant/dispatch-current!)
+  (rfe/start!
+   (rf/router routes {:compile coercion/compile-request-coercers})
+   (fn [m] (reset! match m))
+   {:use-fragment false})
   (start))
 
 (defn stop []

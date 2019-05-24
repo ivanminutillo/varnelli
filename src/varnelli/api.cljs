@@ -10,7 +10,7 @@
 (def balance "balance")
 (def tags-list "tags/list")
 (def txs-list "transactions/list")
-(def tx "transactions/get")
+(def get-tx "transactions/get")
 (def new-tx "transactions/new")
 
 (def headers {"x-api-key" apikey

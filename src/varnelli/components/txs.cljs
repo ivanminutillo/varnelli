@@ -1,6 +1,7 @@
 (ns varnelli.components.txs
   (:require-macros [cljss.core])
-  (:require 
+  (:require
+   [reitit.frontend.easy :as rfe]
    [cljss.core :refer [defstyles]]))
 
 (defstyles table [] {
@@ -43,7 +44,7 @@
          ^{:key {:amount item}}
          [:tr
           [:td 
-           [:a (:transaction-id item)]]
+           [:a {:href (str "/tx/" (:transaction-id item))} (:transaction-id item)]]
           [:td (:amount item)]
           [:td (:currency item)]
           [:td (:timestamp item)]])]]]))
