@@ -4,6 +4,7 @@
    [reitit.frontend :as reitit]
    [reitit.coercion.schema]
    [varnelli.pages.home :refer [home]]
+   [varnelli.pages.tag :refer [tag]]
    [varnelli.pages.tx :refer [tx]]
    [varnelli.pages.about :refer [about]]))
 
@@ -12,6 +13,11 @@
          :view home}]
    ["/about" {:name ::about-view
               :view about}]
-  ["/tx/:id" {:name ::tx-view
-              :view tx
-              :parameters {:path {:id s/Str}}}]])
+   ["/tag/:id" {:name ::tag
+                 :view tag
+                 :coercion reitit.coercion.schema/coercion
+                 :parameters {:path {:id s/Str}}}]
+   ["/tx/:id" {:name ::tx-view
+               :view tx
+               :coercion reitit.coercion.schema/coercion
+               :parameters {:path {:id s/Str}}}]])
