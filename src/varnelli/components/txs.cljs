@@ -53,7 +53,7 @@
         [:div.container.grid-xl
          [:ul.tab.tab-clock {:class (tabs)}
           [:li.tab-item.active
-           [:a "Transactions"]]]
+           [:a "Bitcoin transactions"]]]
          [:table.table {:class (table)}
           [:thead
            [:tr
@@ -86,7 +86,7 @@
     [:div.container.grid-xl
      [:ul.tab.tab-clock {:class (tabs)}
       [:li.tab-item.active
-       [:a "Transactions"]]
+       [:a "Mongo transactions"]]
       ]
      [:table.table {:class (table)}
       [:thead

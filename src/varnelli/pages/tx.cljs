@@ -3,6 +3,7 @@
    [cljss.core]
    [cljs.core.async.macros :refer [go]])
    (:require [reagent.core :as r :refer [atom]]
+             [varnelli.utils.localStorage :refer [get-item]]
              [cljss.core :refer [defstyles]]
              [varnelli.elements.loading :refer [loading]]
              [varnelli.api :refer [fetch get-tx]]))
@@ -52,47 +53,86 @@
                           :text-align "right"})
 
 
-(defonce tx-state (r/atom []))
 
 (defn params [txid] 
-  params {:type "db-only"
-          :connection    "mongo"
+  params {:type "blockchain-and-db"
+          :connection (get-item "database")
           :txid txid})
 
 (defn fetch->tx [txid]
   (fetch get-tx (params (str txid))))
 
+
+(defn blockchain-tx [tx-state] 
+[:div {:class (body)}
+ [:section
+  [:div.container.grid-xl
+   [:h2 "Transaction"]
+   [:h5 (:txid tx-state)]]]
+  [:div.container.grid-xl {:class (status)}
+   [:div {:class (status-item)}
+    [:div {:class (item-key)} "Confirmations"]
+    [:div {:class (item-value)} (:confirmations tx-state)]]
+   [:div {:class (status-item)}
+    [:div {:class (item-key)} "Amount"]
+    [:div {:class (item-value)} (:amount tx-state)]]
+   [:div {:class (status-item)}
+    [:div {:class (item-key)} "Block hash"]
+    [:div {:class (item-value)} (:blockhash tx-state)]]
+   [:div {:class (status-item)}
+    [:div {:class (item-key)} "Time ago"]
+    [:div {:class (item-value)} (:time tx-state)]]]])
+
+
+
+(defn mongo-tx [tx-state] 
+(prn tx-state)
+[:div {:class (body)}
+ [:section
+  [:div.container.grid-xl
+   [:h2 "Transaction"]
+   [:h5 (:transaction-id tx-state)]]]
+ [:div.container.grid-xl {:class (status)}
+  [:div {:class (status-item)}
+   [:div {:class (item-key)} "Currency"]
+   [:div {:class (item-value)} (:currency tx-state)]]
+  [:div {:class (status-item)}
+   [:div {:class (item-key)} "Timestamp"]
+   [:div {:class (item-value)} (:timestamp tx-state)]]
+  [:div {:class (status-item)}
+   [:div {:class (item-key)} "Amount"]
+   [:div {:class (item-value)} (:amount tx-state)]]
+  [:div {:class (status-item)}
+   [:div {:class (item-key)} "Description"]
+   [:div {:class (item-value)} (:description tx-state)]]
+  [:div {:class (status-item)}
+   [:div {:class (item-key)} "from"]
+   [:div {:class (item-value)} (:from-id tx-state)]]
+  [:div {:class (status-item)}
+   [:div {:class (item-key)} "To"]
+   [:div {:class (item-value)} (:to-id tx-state)]]]
+ ])
+
+
 (defn tx
   [match]
-  (let [{:keys [path]} (:parameters match)
-        {:keys [id]} path]
-    (go (let [response (<! (fetch->tx id))]
-          (reset! tx-state (:body response))))
-    (fn []
-      (if (:description @tx-state)
-        [:div {:class (body)}
-         [:section
-          [:div.container.grid-xl
-           [:h2 "Transaction"]
-           [:h5 (:transaction-id @tx-state)]]]
-         [:div.container.grid-xl {:class (status)}
-          [:div {:class (status-item)}
-           [:div {:class (item-key)} "Currency"]
-           [:div {:class (item-value)} (:currency @tx-state)]]
-          [:div {:class (status-item)}
-           [:div {:class (item-key)} "Timestamp"]
-           [:div {:class (item-value)} (:timestamp @tx-state)]]
-          [:div {:class (status-item)}
-           [:div {:class (item-key)} "Amount"]
-           [:div {:class (item-value)} (:amount @tx-state)]]
-          [:div {:class (status-item)}
-           [:div {:class (item-key)} "Description"]
-           [:div {:class (item-value)} (:description @tx-state)]]
-          [:div {:class (status-item)}
-           [:div {:class (item-key)} "from"]
-           [:div {:class (item-value)} (:from-id @tx-state)]]
-          [:div {:class (status-item)}
-           [:div {:class (item-key)} "To"]
-           [:div {:class (item-value)} (:to-id @tx-state)]]]
-         ]
-        [loading]))))
+  (let 
+   [tx-state (r/atom {:tx nil
+                      :db nil})]
+    (r/create-class
+     {:component-did-mount
+      (fn []
+        (swap! tx-state assoc :db (get-item "database"))
+        (let [{:keys [path]} (:parameters match)
+              {:keys [id]} path]
+          (go (let [response (<! (fetch->tx id))]
+                (swap! tx-state assoc :tx (:body response)))))
+        )
+      :display-name "Tx page"
+      :reagent-render
+      (fn []
+        (if (empty? (:tx @tx-state))
+          [loading]
+          (if (= (:db @tx-state) "bitcoin")
+            [blockchain-tx (:tx @tx-state)]
+            [mongo-tx (:tx @tx-state)])))})))
