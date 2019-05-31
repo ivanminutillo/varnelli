@@ -5,6 +5,7 @@
             [reitit.coercion :as coercion]
             [reitit.frontend.easy :as rfe]
             [reagent.session :as session]
+            [varnelli.utils.localStorage :refer [get-item]]
             [cljss.core :refer [inject-global]]
             [varnelli.components.header :refer [header]]
             [varnelli.routes :refer [routes]]))
@@ -17,12 +18,12 @@
 (defonce match (r/atom nil))
 
 (defn current-page []
-  [:div
-   [header]
-   (if @match
-     (let [view (:view (:data @match))]
-       (print view)
-       [view @match]))])
+  (let [db (r/atom  (get-item "database"))]
+    [:div
+     [header db]
+     (if @match
+       (let [view (:view (:data @match))]
+         [view @match @db]))]))
 
 
 (defn start []
@@ -34,7 +35,8 @@
   ;; this is called in the index.html and must be exported
   ;; so it is available even in :advanced release builds
   (rfe/start!
-   (rf/router routes {:compile coercion/compile-request-coercers})
+   (rf/router routes
+              {:compile coercion/compile-request-coercers})
    (fn [m] (reset! match m))
    {:use-fragment false})
   (start))

@@ -1,6 +1,9 @@
 (ns varnelli.components.header
   (:require-macros [cljss.core])
-  (:require [cljss.core :refer [defstyles]]))
+  (:require
+   [reagent.core :as r :refer [atom]]
+   [varnelli.utils.localStorage :refer [set-item! get-item]]
+   [cljss.core :refer [defstyles]]))
 
 (defstyles login []
   {:text-transform "uppercase"
@@ -30,7 +33,7 @@
             :background-color "#00c3ff"
             :font-weight "600"}})
 (defn header
-  [txs]
+  [db]
   [:section
    [:div.container.grid-xl
     [:header.navbar {:class (hero)}
@@ -38,7 +41,7 @@
       [:a {:class (logo) :href "/"} "🍶 Varnelli" [:small.label "alpha"]]]
      [:section.navbar-section
       [:div.dropdown
-       [:a.btn.btn-link.dropdown-toggle {:tabindex "0"}
+       [:a.btn.btn-link.dropdown-toggle {:tabIndex "0"}
         [:i.icon.icon-2x.icon-apps]
         ]
        [:ul.menu
@@ -46,7 +49,17 @@
         [:li.menu-item
          [:div.form-group
           [:label.form-switch
-           [:input {:type "checkbox"}]
+           [:input {:type "checkbox"
+                    :checked (if (= @db "bitcoin") 
+                               true 
+                               false)
+                    :on-change (fn [evt]
+                                 (if (= evt.target.checked true)
+                                   (reset! db "bitcoin")
+                                   (reset! db "mongo"))
+                                 (set-item! "database" (if (= evt.target.checked true)
+                                                        "bitcoin"
+                                                        "mongo")))} ]
            [:i.form-icon]
            "Blockchain"]]]
         [:li.divider {:data-content "LINKS"}]

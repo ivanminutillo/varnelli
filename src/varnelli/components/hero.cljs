@@ -8,20 +8,10 @@
    [reagent.core :as r :refer [atom]]
    [varnelli.dataviz.tags :refer [tags-distribution]]
    [varnelli.dataviz.txs :refer [txs-distribution]]
+   [varnelli.components.search :refer [search]]
    [cljss.core :refer [defstyles]]))
 
-(defstyles search []
-  {:margin-top "60px"
-   "i" {:margin-right "10px !important"
-        :color "white"}
-   "input" {:height "70px"
-            :font-size "22px"
-            :letter-spacing "1px"
-            :font-weight "700"
-            :border-radius "4px"
-            :background "rgba(147, 209, 240, .6)"
-            :border "0"
-            :box-shadow "0 2px 4px 0 rgba(0,0,0,.30)"}})
+
 
 (defstyles dataviz [] {:margin-top "40px"
                        :background "white"
@@ -71,6 +61,7 @@
 
 
 
+
 (defn hero [txs]
   (go (let [tags (<! (fetch->tags))]
         (reset! tags-state (:body tags))))
@@ -78,10 +69,7 @@
     (if (:tags @tags-state)
       [:section {:class (grid)}
        [:div
-        [:div {:class (search)}
-         [:div.has-icon-right
-          [:input.form-input {:placeholder "Search for hash, transaction or tag" :type "text"}]
-          [:i.form-icon.icon.icon-search]]]
+        [search]
         [:div {:class (dataviz-container)}
          [:div {:class (dataviz)}
           (let [dataviz (txs-distribution (:transactions @txs))]
@@ -103,4 +91,3 @@
          [:h2 (count (:tags @tags-state))]]]]
       [loading]))
   )
-  
