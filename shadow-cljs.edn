@@ -6,6 +6,7 @@
                 [cljs-http "0.1.46"]
                 [metosin/reitit "0.3.0"]
                 [reagent-utils "0.3.2"]
+                [reagent-forms "0.5.23"]
                 [yogthos/config "1.1.1"]
                 [metasoarous/oz "1.6.0-alpha2"
                  :exclusions [cljsjs/vega cljsjs/vega-lite cljsjs/vega-embed cljsjs/vega-tooltip
