@@ -73,7 +73,31 @@
               [:td [:div (:blockhash item)]]
               [:td [:div (:time item)]]])]]])))))
 
-(defn txs
+
+(defn txs [txs-state]
+  (let [items (:transactions @txs-state)]
+    [:div.container.grid-xl
+     [:ul.tab.tab-clock {:class (tabs)}
+      [:li.tab-item.active
+       [:a "Mongo transactions"]]]
+     [:table.table {:class (table)}
+      [:thead
+       [:tr
+        [:th "Transaction Id"]
+        [:th "Amount"]
+        [:th "Currency"]
+        [:th "Time ago"]]]
+      [:tbody
+       (for [item items]
+         ^{:key {:amount item}}
+         [:tr
+          [:td
+           [:a {:href (str "/tx/" (:transaction-id item))} (:transaction-id item)]]
+          [:td (:amount item)]
+          [:td (:currency item)]
+          [:td (:timestamp item)]])]]]))
+
+(defn mongo-txs
   []
  (let [txs-state (r/atom [])] 
 (go (let [response (<! (fetch->txs {:type "blockchain-and-db"
@@ -82,27 +106,6 @@
 (fn []
   (if (empty? @txs-state)
     [loading]
-    (let [items (:transactions @txs-state)]
-    [:div.container.grid-xl
-     [:ul.tab.tab-clock {:class (tabs)}
-      [:li.tab-item.active
-       [:a "Mongo transactions"]]
-      ]
-     [:table.table {:class (table)}
-      [:thead
-         [:tr
-          [:th "Transaction Id"]
-          [:th "Amount"]
-          [:th "Currency"]
-          [:th "Time ago"]]]
-      [:tbody
-       (for [item items]
-         ^{:key {:amount item}}
-         [:tr
-          [:td 
-           [:a {:href (str "/tx/" (:transaction-id item))} (:transaction-id item)]]
-          [:td (:amount item)]
-          [:td (:currency item)]
-          [:td (:timestamp item)]])]]])
+    [txs txs-state]
     ))
 ))

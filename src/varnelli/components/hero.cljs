@@ -8,7 +8,7 @@
    [reagent.core :as r :refer [atom]]
    [varnelli.dataviz.tags :refer [tags-distribution]]
    [varnelli.dataviz.txs :refer [txs-distribution]]
-   [varnelli.components.search :refer [search]]
+   [varnelli.components.search :refer [search blockchain-search]]
    [cljss.core :refer [defstyles]]))
 
 
@@ -52,27 +52,32 @@
 
 (defonce tags-state (r/atom []))
 
+(defonce txs-state (r/atom []))
 
-(def params {:type "db-only"
-             :connection    "mongo"})
-
-(defn fetch->tags []
+(defn fetch->tags [params]
   (fetch tags-list params))
 
 
+(defn fetch->txs [params]
+  (fetch txs-list params))
 
 
-(defn hero [txs]
-  (go (let [tags (<! (fetch->tags))]
-        (reset! tags-state (:body tags))))
+(defn hero []
+  (go (let [tags (<! (fetch->tags {:type "blockchain-and-db"
+                                   :connection    "mongo"}))]
+        (reset! tags-state (:body tags)))
+      (let [txs (<! (fetch->txs {:type "blockchain-and-db"
+                                 :connection    "mongo"}))]
+        (reset! txs-state (:body txs)))
+      )
   (fn []
-    (if (:tags @tags-state)
+    (if (and (not-empty @tags-state) (not-empty @txs-state))
       [:section {:class (grid)}
        [:div
         [search]
         [:div {:class (dataviz-container)}
          [:div {:class (dataviz)}
-          (let [dataviz (txs-distribution (:transactions @txs))]
+          (let [dataviz (txs-distribution (:transactions @txs-state) "timestamp")]
             [oz.core/vega-lite dataviz])]
          [:div {:class (dataviz)}
           (let [dataviz (tags-distribution (:tags @tags-state))]
@@ -80,10 +85,10 @@
        [:div {:class (counter-container)}
         [:div {:class (counter)}
          [:h5 "Total transactions"]
-         [:h2 (:total-count @txs)]]
+         [:h2 (:total-count @txs-state)]]
         [:div {:class (counter)}
          [:h5 "Volume exchanged"]
-         [:h2 (->> (:transactions @txs)
+         [:h2 (->> (:transactions @txs-state)
                    (map :amount)
                    (reduce +))]]
         [:div {:class (counter)}
@@ -91,3 +96,28 @@
          [:h2 (count (:tags @tags-state))]]]]
       [loading]))
   )
+
+(defn blockchain-hero []
+  (let [txs-state (r/atom [])] 
+  (go (let [txs (<! (fetch->txs {:type "blockchain-and-db"
+                                 :connection "bitcoin"}))]
+        (reset! txs-state (:body txs))))
+  (fn []
+    (if (not-empty @txs-state)
+      [:section {:class (grid)}
+       [:div
+        [blockchain-search]
+        [:div {:class (dataviz-container)}
+         [:div {:class (dataviz)}
+          (let [dataviz (txs-distribution  @txs-state "blocktime")]
+            [oz.core/vega-lite dataviz])]]]
+       [:div {:class (counter-container)}
+        [:div {:class (counter)}
+         [:h5 "Total transactions"]
+         [:h2 (count @txs-state)]]
+        [:div {:class (counter)}
+         [:h5 "Volume exchanged"]
+         [:h2 (->> @txs-state
+                   (map :amount)
+                   (reduce +))]]]]
+      [loading]))))

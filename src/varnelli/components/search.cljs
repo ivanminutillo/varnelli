@@ -1,11 +1,12 @@
 (ns varnelli.components.search
   (:require-macros [cljss.core])
     (:require
-     [reagent.core :as reagent :refer [atom]]
+     [reagent.core :as r :refer [atom]]
      [reitit.frontend.easy :as rfe]
      [reagent-forms.core :refer [bind-fields init-field value-of]]
      [cljss.core :refer [defstyles]]))
   
+
 
 (defstyles search-wrapper []
   {:margin-top "60px"
@@ -48,6 +49,11 @@
   [:div
    (input :text :tag "Search for tag")])
 
+
+(def blockchain-form-template
+  [:div
+   (input :text :tag "Search for txid")])
+
 (defn search []
   (let [doc (atom {:tag nil})]
     (fn []
@@ -57,5 +63,19 @@
         doc]
        (if (:tag @doc)
          [:a {:href (str "/tag/" (:tag @doc))}
+          [:i.form-icon.icon.icon-search]]
+         nil)])))
+
+
+(defn blockchain-search []
+  (let [doc (atom {:tag nil})]
+    (fn []
+      [:div {:class (search-wrapper)}
+      ;  (.log js/console "button" (Button))
+       [bind-fields
+        blockchain-form-template
+        doc]
+       (if (:tag @doc)
+         [:a {:href (str "/tx/" (:tag @doc))}
           [:i.form-icon.icon.icon-search]]
          nil)])))
