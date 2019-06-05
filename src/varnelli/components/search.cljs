@@ -9,7 +9,7 @@
 
 
 (defstyles search-wrapper []
-  {:margin-top "60px"
+  {:width "600px"
    :position "relative"
    "a" {:width "50px"
         :position "absolute"
@@ -25,16 +25,17 @@
                   :background "blue"}}
    "i" {
         :vertical-align "middle"
-        :top "10px"
+        :top "-25px"
         :color "white"}
    "input" {:height "70px"
-            :font-size "22px"
-            :letter-spacing "1px"
-            :font-weight "700"
+            :text-indent "8px"
+            :font-size "20px"
+            :letter-spacing "0px"
+            :font-weight "500"
             :border-radius "4px"
-            :background "rgba(147, 209, 240, .6)"
+            :background "rgb(75, 91, 107)"
             :border "0"
-            :box-shadow "0 2px 4px 0 rgba(0,0,0,.30)"}})
+            }})
 
 (defn row [input]
   [:div.has-icon-right

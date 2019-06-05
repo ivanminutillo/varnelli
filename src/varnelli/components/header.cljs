@@ -2,6 +2,7 @@
   (:require-macros [cljss.core])
   (:require
    [reagent.core :as r :refer [atom]]
+   [varnelli.components.search :refer [search blockchain-search]]
    [varnelli.utils.localStorage :refer [set-item! get-item]]
    [cljss.core :refer [defstyles]]))
 
@@ -10,12 +11,14 @@
    :letter-spacing "1px"
    :font-weight "800"})
 
+(defstyles header-wrapper []
+  {:background "transparent"})
+
 (defstyles hero []
 
   {
    :height "100px"
    :line-height "100px"
-   :border-bottom "1px solid rgba(255, 255, 255, .3)"
    "ul" {:line-height "20px"
          :right "0 !important"
          :left "auto !important"}
@@ -28,6 +31,7 @@
 
 (defstyles logo []
   {:color "white !important"
+   :font-size "16px !important"
    :&:hover {:text-decoration "none"}
    "small" {:margin-left "4px"
             :color "white"
@@ -35,11 +39,18 @@
             :font-weight "600"}})
 (defn header
   [db]
-[:section
+[:section {:class (header-wrapper)}
  [:div.container.grid-xl
   [:header.navbar {:class (hero)}
    [:section.navbar-section
     [:a {:class (logo) :href "/"} "🍶 Varnelli" [:small.label "alpha"]]]
+   [:section.navbar-center
+    (if (= (get-item "database") "bitcoin")
+      [:div
+       [blockchain-search]]
+      [:div
+       [search]])
+    ]
    [:section.navbar-section
     [:div.dropdown
      [:a.btn.btn-link.dropdown-toggle {:tabIndex "0"}

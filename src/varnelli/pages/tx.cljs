@@ -52,7 +52,7 @@
                           :flex "1"
                           :text-align "right"})
 
-
+(defstyles tag [] {:color "#3b4351"})
 
 (defn params [txid] 
   params {:type "blockchain-and-db"
@@ -86,7 +86,6 @@
 
 
 (defn mongo-tx [tx-state] 
-(prn tx-state)
 [:div {:class (body)}
  [:section
   [:div.container.grid-xl
@@ -105,6 +104,13 @@
   [:div {:class (status-item)}
    [:div {:class (item-key)} "Description"]
    [:div {:class (item-value)} (:description tx-state)]]
+  [:div {:class (status-item)}
+   [:div {:class (item-key)} "Tags"]
+[:div {:class (item-value)}
+   (for [item (:tags tx-state)]
+     
+      ^{:key item}
+      [:div.chip {:class (tag)} item])]]
   [:div {:class (status-item)}
    [:div {:class (item-key)} "from"]
    [:div {:class (item-value)} (:from-id tx-state)]]

@@ -1,8 +1,13 @@
-(ns varnelli.pages.about )
+(ns varnelli.pages.about
+  (:require-macros [cljss.core])
+  (:require [cljss.core :refer [defstyles]])
+)
 
-
+(defstyles wrapper [] {:color "#fafafa"
+                       :margin-top "60px"})
 (defn about 
   []
-  [:div
-   [:div "about page"]
+  [:section.container.grid-xl {:class (wrapper)}
+   [:h1 "About Varnelli"]
+   [:p "Varnelli is a block explorer to navigate"]
    ])
