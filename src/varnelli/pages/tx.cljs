@@ -109,14 +109,16 @@
 [:div {:class (item-value)}
    (for [item (:tags tx-state)]
      
-      ^{:key item}
-      [:div.chip {:class (tag)} item])]]
+     ^{:key item}
+      [:a {:href (str "/tag/" item)}
+     [:div.chip {:class (tag)} item]])]]
   [:div {:class (status-item)}
    [:div {:class (item-key)} "from"]
-   [:div {:class (item-value)} (:from-id tx-state)]]
+   [:div {:class (item-value)} 
+    [:a {:href (str "/account/" (:from-id tx-state))} (:from-id tx-state)]]]
   [:div {:class (status-item)}
    [:div {:class (item-key)} "To"]
-   [:div {:class (item-value)} (:to-id tx-state)]]]
+   [:div {:class (item-value)} [:a {:href (str "/account/" (:to-id tx-state))} (:to-id tx-state)]]]]
  ])
 
 

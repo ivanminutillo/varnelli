@@ -86,7 +86,6 @@
         (reset! txs-state (:body txs)))
       )
   (fn []
-                (prn @tags-state)
     (if (and (not-empty @tags-state) (not-empty @txs-state))
       [:section.grid-xl.container
        [:div {:class (counter-container)}
