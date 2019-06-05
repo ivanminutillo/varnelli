@@ -78,7 +78,7 @@
 (defstyles tag [] {:color "#3b4351"})
 
 (defn hero []
-  (go (let [tags (<! (fetch->tags {:type "blockchain-and-db"
+  (go (let [tags (<! (fetch->tags {:type "db-only"
                                    :connection    "mongo"}))]
         (reset! tags-state (:body tags)))
       (let [txs (<! (fetch->txs {:type "blockchain-and-db"
