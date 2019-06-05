@@ -100,8 +100,8 @@
 (defn mongo-txs
   []
  (let [txs-state (r/atom [])] 
-(go (let [response (<! (fetch->txs {:type "blockchain-and-db"
-                                    :connection  (get-item "database")}))]
+(go (let [response (<! (fetch->txs {:type "db-only"
+                                    :connection  "mongo"}))]
       (reset! txs-state (:body response))))
 (fn []
   (if (empty? @txs-state)
