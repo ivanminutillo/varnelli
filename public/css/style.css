@@ -1,3 +1,15 @@
 /* some style */
 @import url("https://unpkg.com/spectre.css/dist/spectre.min.css");
 @import url("https://unpkg.com/spectre.css/dist/spectre-icons.css");
+
+.pagination .page-item.active a {
+    background: #2bc3ff
+}
+
+.pagination .page-item a:hover {
+    color:  #2bc3ff
+}
+
+.pagination .page-item.active a:hover {
+  color: #fff
+}

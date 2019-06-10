@@ -23,6 +23,12 @@
                            :text-transform "uppercase"
                            :letter-spacing "1px"}})
 
+(defstyles wrapper [] {
+                       "a" {:color "white"
+                            :cursor "pointer"
+                            :margin-bottom "40px"
+                            "i" {:margin-left "20px"}}})
+
 (defstyles tabs [] {
                     :border-bottom 0
                     :margin-bottom "20px"
@@ -39,6 +45,31 @@
 
 (defn fetch->txs [params]
   (fetch txs-list params))
+
+(defn txs [txs txs-state]
+  (let [items (:transactions txs)]
+    [:div
+     [:ul.tab.tab-clock {:class (tabs)}
+      [:li.tab-item.active
+       [:a "Mongo transactions"]]]
+     [:table.table {:class (table)}
+      [:thead
+       [:tr
+        [:th "Transaction Id"]
+        [:th "Amount"]
+        [:th "Currency"]
+        [:th "Time ago"]]]
+      [:tbody
+       (for [item items]
+         ^{:key {:amount item}}
+         [:tr
+          [:td
+           [:a {:href (str "/tx/" (:transaction-id item))} (:transaction-id item)]]
+          [:td (:amount item)]
+          [:td (:currency item)]
+          [:td (:timestamp item)]])]]
+     ]))
+
 
 (defn blockchain-txs
   []
@@ -74,38 +105,49 @@
               [:td [:div (:time item)]]])]]])))))
 
 
-(defn txs [txs-state]
-  (let [items (:transactions @txs-state)]
-    [:div.container.grid-xl
-     [:ul.tab.tab-clock {:class (tabs)}
-      [:li.tab-item.active
-       [:a "Mongo transactions"]]]
-     [:table.table {:class (table)}
-      [:thead
-       [:tr
-        [:th "Transaction Id"]
-        [:th "Amount"]
-        [:th "Currency"]
-        [:th "Time ago"]]]
-      [:tbody
-       (for [item items]
-         ^{:key {:amount item}}
-         [:tr
-          [:td
-           [:a {:href (str "/tx/" (:transaction-id item))} (:transaction-id item)]]
-          [:td (:amount item)]
-          [:td (:currency item)]
-          [:td (:timestamp item)]])]]]))
 
 (defn mongo-txs
   []
- (let [txs-state (r/atom [])] 
-(go (let [response (<! (fetch->txs {:type "db-only"
-                                    :connection  "mongo"}))]
-      (reset! txs-state (:body response))))
-(fn []
-  (if (empty? @txs-state)
-    [loading]
-    [txs txs-state]
-    ))
-))
+  (let [txs-state (r/atom {:txs []
+                           :page 1})]
+    (go (let [response (<! (fetch->txs {:type "db-only"
+                                        :connection  "mongo"
+                                        :per-page 10
+                                        :page (:page @txs-state)}))]
+          (swap! txs-state assoc :txs (:body response))))
+    (fn []
+      (if (empty? (:txs @txs-state))
+        [loading]
+        [:div.container.grid-xl {:class (wrapper)}
+         [txs (:txs @txs-state) txs-state]
+         [:div.p-centered
+          [:ul.pagination
+           [:li {:class ["page-item" (when (= 1 (:page @txs-state)) "disabled")]}
+            [:a {:on-click #(go (let [response (<! (fetch->txs {:type "db-only"
+                                                                :connection  "mongo"
+                                                                :per-page 10
+                                                                :page (dec (:page @txs-state))}))]
+                                  (swap! txs-state assoc :txs (:body response))
+                                  (swap! txs-state assoc :page (dec (:page @txs-state)))))
+                 :tabIndex "-1"} "Previous"]]
+
+           (for [x (range 0 (int (Math/ceil (/ (:total-count (:txs @txs-state)) 10))))]
+             ^{:key x}
+             [:li {:class ["page-item" (when (= (inc x) (:page @txs-state)) "active")]}
+              [:a {:on-click #(go (let [response (<! (fetch->txs {:type "db-only"
+                                                                  :connection  "mongo"
+                                                                  :per-page 10
+                                                                  :page (inc x)}))]
+                                    (swap! txs-state assoc :txs (:body response))
+                                    (swap! txs-state assoc :page (inc x))))} (inc x)]])
+
+
+           [:li {:class ["page-item" (when (> 10 (int (/ (:total-count (:txs @txs-state)) (:page @txs-state)))) "disabled")]}
+            [:a
+             {:on-click #(go (let [response (<! (fetch->txs {:type "db-only"
+                                                             :connection  "mongo"
+                                                             :per-page 10
+                                                             :page (inc (:page @txs-state))}))]
+                               (swap! txs-state assoc :txs (:body response))
+                               (swap! txs-state assoc :page (inc (:page @txs-state)))))} "Next"]]]]
+         ]))))

@@ -21,7 +21,7 @@ cd varnelli
 npm install
 ```
 
-#### 3. Rename ```apikey.cljs.test``` to ```apikey.cljs``` and paste the apikey value generated during the swapi build fase 
+#### 3. Rename ```apikey.cljs.test``` to ```apikey.cljs``` and paste the apikey value generated during the swapi build phase 
 
 #### 4. Start the server
 
